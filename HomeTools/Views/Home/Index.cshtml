@@ -1,0 +1,9 @@
+﻿@using HomeTools.Models.PartialData
+
+@{
+    ViewData["Title"] = "HomeTools";
+}
+
+<div class="column">
+  @await Html.PartialAsync("_HeaderSection", new HeaderSection(){Title = "HomeTools", SubTitle = "Инструмент для домашнего использования"})
+</div>

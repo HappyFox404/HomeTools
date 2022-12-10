@@ -1,0 +1,146 @@
+﻿@using HomeTools.Models.PartialData
+@using HomeTools.Extensoins
+@model HomeTools.Models.ViewModels.SpaceManageViewModel
+@{
+    
+}
+
+<div class="column">
+    @await Html.PartialAsync("_HeaderSection", new HeaderSection(){Title = "Статистика", SubTitle = "Менеджер пространства"})
+    
+    <div class="box mt-2 py-2">
+        <div class="is-flex is-flex-direction-row">
+            <span class="tag is-info">Логические диски</span>
+            <nav class="breadcrumb has-bullet-separator ml-2" aria-label="breadcrumbs">
+                <ul>
+                    @foreach (var drive in @Model.Drivers)
+                    {
+                        <li>
+                            <a href="@Url.Action("SpaceManage","Statistic", new { selectDirectory = $"{drive.Name}", isDrive = true})">
+                                <span class="icon is-small">
+                                    <i class="fa-solid fa-hard-drive" aria-hidden="true"></i>
+                                </span>
+                                <span>@drive.Name</span>
+                            </a>
+                        </li>
+                    }
+                </ul>
+            </nav>
+        </div>
+    </div>
+    
+    @if (string.IsNullOrEmpty(Model.CurrentPath) == false)
+    {
+        <div class="box mt-1 py-2">
+            <nav class="breadcrumb" aria-label="breadcrumbs">
+                <ul>
+                    @{
+                        List<string> catalogs = new (Model.CurrentPath.Split("\\", StringSplitOptions.RemoveEmptyEntries));
+                    }
+                    @foreach (var item in catalogs)
+                    {
+                        <li>
+                            @if (item != catalogs.First())
+                            {
+                                <a href="@Url.Action("SpaceManage", "Statistic", new { path = Model.CurrentPath, selectDirectory = item })">
+                                    <span>@item</span>
+                                </a>
+                            }
+                            else
+                            {
+                                <a href="@Url.Action("SpaceManage", "Statistic", new { path = Model.CurrentPath, selectDirectory = item, isDrive = true })">
+                                    <span>@item</span>
+                                </a>
+                            }
+                        </li>
+                    }
+                </ul>
+            </nav>
+        </div>
+    }
+    
+    <div class="columns">
+        <div class="column">
+            <div class="box mx-1">
+                @if (Model.Catalogs.Count > 0)
+                {
+                    <table class="table is-fullwidth">
+                        <thead>
+                        <tr>
+                            <td>Название</td>
+                            <td>Дата создания</td>
+                            <td>Размер</td>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        @foreach (var item in @Model.Catalogs)
+                        {
+                            <tr>
+                                <td>
+                                    <span class="icon-text">
+                                        <span class="icon">
+                                            <i class="fa-solid fa-folder"></i>
+                                        </span>
+                                        <span>
+                                            <a href="@Url.Action("SpaceManage", "Statistic", new { path = Model.CurrentPath, selectDirectory = item })">
+                                                @item.Name
+                                            </a>
+                                        </span>
+                                    </span>
+                                </td>
+                                <td>@Html.FormatDate(item.LastWriteTime)</td>
+                                <td>
+                                    <a class="button has-tooltip-right is-small" data-tooltip="Данные папки">
+                                        <span class="icon is-small">
+                                            <i class="fa-solid fa-info"></i>
+                                        </span>
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                        @foreach (var item in @Model.Files)
+                        {
+                            <tr class="file-data" data-file="@item.FullName">
+                                <td>
+                                    <span class="icon-text">
+                                        <span class="icon">
+                                            <i class="fa-solid fa-file"></i>
+                                        </span>
+                                        <span>
+                                            @item.Name
+                                        </span>
+                                    </span>
+                                </td>
+                                <td>@Html.FormatDate(item.LastWriteTime)</td>
+                                <td>@Html.FormatBytes(item.Length)</td>
+                            </tr>
+                        }
+                        </tbody>
+                    </table>
+                }
+                else if (Model.IsProtected)
+                {
+                    <div class="notification is-warning is-light">
+                        Недостаточно прав для просмотра данного каталога
+                    </div>
+                }
+                else
+                {
+                    <div class="notification is-warning is-light">
+                        Не выбран каталог или каталог является пустым
+                    </div>
+                }
+            </div>
+        </div>
+        <div class="column">
+            <div class="box mx-1 is-hidden" id="statistic-space-manage-no-files-diagram">
+                <div class="notification is-warning is-light">
+                  Нет файлов для построения диаграммы
+                </div>
+            </div>
+            <div class="box mx-1" id="statistic-space-manage-files-diagram">
+                <canvas id="statistic-space-manage-files-diagram-canvas"></canvas>
+            </div>
+        </div>
+    </div>
+</div>

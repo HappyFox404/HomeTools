@@ -1,0 +1,17 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"]</title>
+    <link rel="stylesheet" href="~/dist/production.min.css" asp-append-version="true" />
+    <script src="~/dist/libs.min.js" asp-append-version="true"></script>
+    <script src="~/dist/production.min.js" asp-append-version="true"></script>
+</head>
+<body>
+<main class="content-margin columns mt-1 px-1">
+    @RenderBody()
+</main>
+@await Html.PartialAsync("_Menu")
+</body>
+</html>

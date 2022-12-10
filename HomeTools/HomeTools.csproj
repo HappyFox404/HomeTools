@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+    <PropertyGroup>
+        <TargetFramework>net6.0</TargetFramework>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <UserSecretsId>dotnet-HomeTools-A5712D62-9B4A-4324-BDF0-B1ADF36310A6</UserSecretsId>
+        <IsTransformWebConfigDisabled>true</IsTransformWebConfigDisabled>
+        <UseRazorSourceGenerator>true</UseRazorSourceGenerator>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Microsoft.AspNetCore.Hosting.WindowsServices" Version="6.0.11" />
+        <PackageReference Include="Microsoft.Extensions.Hosting.WindowsServices" Version="6.0.1" />
+        <PackageReference Include="NLog" Version="5.1.0" />
+        <PackageReference Include="NLog.Web.AspNetCore" Version="5.2.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="wwwroot\dist" />
+    </ItemGroup>
+</Project>
